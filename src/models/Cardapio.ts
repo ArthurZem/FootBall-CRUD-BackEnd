@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 
-interface interfaceCardapio {
+
+ interface interfaceCardapio {
     id: String,
     preco: Number,
     nome: String,
@@ -8,7 +9,8 @@ interface interfaceCardapio {
     
   }
 
-const CardapioSchema: Schema = new mongoose.Schema(
+
+const CardapioSchema = new mongoose.Schema(
     {    
         id: {type: String},
         preco: {type: Number,required: true},

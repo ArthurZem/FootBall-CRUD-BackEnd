@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import CardapioController from './controllers/CardapioController';
+import UsuarioController from './controllers/UsuarioController';
 
 const routes = Router();
 
@@ -9,19 +10,19 @@ routes.get('/', (req, res) => {
 })
 
 // Rotas de Cardapio
-routes.delete('/Cardapio/:id',CardapioController.delete);// apagar prato do Cardapio //
+routes.delete('/cardapio/:id',CardapioController.delete);// apagar prato do Cardapio //
 routes.post('/cadastroPrato', CardapioController.add);// cadastrar prato no cardapio//
-routes.get('/Cardapio',CardapioController.getAll);// listar Cardapio com todos os pratos //
-routes.get('/buscarPrato/:id',CardapioController.get);// listar prato através do id//
-routes.put('/atualizarCardapio/:id',CardapioController.update); // atualizar algum prato localizando através do Cardapio pelo id//
+routes.get('/cardapio',CardapioController.getAll);// listar Cardapio com todos os pratos //
+routes.get('/cardapio/:id',CardapioController.get);// listar prato através do id//
+routes.put('/cardapio/:id',CardapioController.update); // atualizar algum prato localizando através do Cardapio pelo id//
 
 
 // Rotas de Usuário
-routes.delete('/user/:id',CardapioController.delete);// apagar usuário //
-routes.post('/cadastroUsuario', CardapioController.add);// cadastrar usuário //
-routes.get('/listUser',CardapioController.getAll);// listar todos os usuários //
-routes.get('/findUser/:id',CardapioController.get);// listar  Cardapios por id//
-routes.put('/atualizarUser/:id',CardapioController.update); // atualizar Cardapio pelo id//
+routes.delete('/user/:id',UsuarioController.delete);// apagar usuário //
+routes.post('/cadastroUsuario', UsuarioController.add);// cadastrar usuário //
+routes.get('/listUser',UsuarioController.getAll);// listar todos os usuários //
+routes.get('/findUser/:id',UsuarioController.get);// encontrar usuário por id//
+routes.put('/atualizarUser/:id',UsuarioController.update); // atualizar usuário pelo id//
 
 
 

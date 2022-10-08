@@ -5,70 +5,66 @@ import cardapios from '../models/Cardapio';
 const Cardapio_Schema = require('../models/Cardapio');
 
 class CardapioController {
-    public async index(req: Request, res: Response): Promise<Response> {
-        const cardapio = await Cardapio_Schema.find();
-        return res.json(cardapio);
-    }
 
-    public async getAll(req: Request, res: Response): Promise<void> {
-        await Cardapio_Schema.find((err: any, cardapio: any) => {
-            if (err) {
-                res.send(err)
-            } else {
-                res.send(cardapio)
+    public async add(req: Request,res: Response): Promise<void> {
+        let cardapio = new cardapios(req.body);
+        await cardapio.save((err:any)=>{
+            if(err){
+                res.status(500).send({message: `${err.message} - falha ao cadastrar novo cardapio.`})
+            }
+            else{
+                res.status(201).send(cardapio.toJSON())
             }
         })
     }
 
-    public async get(req: Request, res: Response): Promise<void> {
+    public getAll = (req: Request,res: Response) => {
+        cardapios.find((err: any,cardapios:any)=>{
+            res.status(200).json(cardapios)
+        })
+    }
+
+
+    public get = (req: Request, res: Response) => {
         const id = req.params.id
-        await Cardapio_Schema.findById(id, (err: any, Cardapio: any) => {
-            if (err) {
+        cardapios.findById(id, (err: any, Cardapios: any)=>{
+            if(err){
                 res.send(err);
-            } else {
-                res.send(Cardapio);
+            }
+            else{
+                res.send(Cardapios);
             }
         })
     }
 
-    public async add(req: Request, res: Response): Promise<void> {
-        let Cardapio = new Cardapio_Schema(req.body);
-        await Cardapio.save((err: any) => {
-            if (err) {
-                res.send(err)
-            } else {
-                res.send(Cardapio)
-            }
-        })
-    }
-
-    public async delete(req: Request, res: Response): Promise<void> {
-        await Cardapio_Schema.deleteOne({ _id: req.params.id }, (err: any) => {
-            if (err) {
-                res.send(err)
-            } else {
-                res.send("Ok")
-            }
-        })
-    }
-
-    public async update(req: Request, res: Response): Promise<void> {
+    public update = (req:Request, res:Response) => {
         const id = req.params.id
-        await Cardapio_Schema.findByIdAndUpdate(id, req.body, (err: any, Cardapio: any) => {
-            if (err) {
-                res.send(err);
-            } else {
-                res.send(Cardapio);
+
+        cardapios.findByIdAndUpdate(id, {$set: req.body}, (err:any, Cardapio: any)=> {
+            if(err){
+                res.status(500).send({message: err.message});
+            }   
+            else{
+                res.status(200).send({message: 'prato atualizado com sucesso!'})
             }
         })
     }
 
+    public delete = (req: Request, res: Response) => {
+        const id = req.params.id
 
-
-    public async store(req: Request, res: Response): Promise<Response> {
-        const Cardapio = await Cardapio_Schema.create(req.body);
-        return res.json(Cardapio);
+        cardapios.findByIdAndDelete(id , (err:any)=> {
+            if(err){
+                res.status(500).send({message: err.message})
+            }
+            else{
+                res.status(200).send('Prato deletado com sucesso!')
+            }
+        })
     }
+
 }
+
+
 
 export default new CardapioController();
