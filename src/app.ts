@@ -32,7 +32,7 @@ this.express.use(routes);
 }
 
 private connectDatabase(): void {
-const uri = "mongodb+srv://Arthur:12@progwebcluster.ksn3duz.mongodb.net/test";
+const uri = "mongodb+srv://Arthur:12@progwebcluster.ksn3duz.mongodb.net/restaurante";
 mongoose.connect(uri, {
 serverApi: ServerApiVersion.v1
 }).then(() => {
