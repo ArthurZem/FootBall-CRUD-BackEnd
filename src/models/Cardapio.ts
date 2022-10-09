@@ -3,8 +3,8 @@ import mongoose, { Schema } from 'mongoose';
 
  interface interfaceCardapio {
     id: String,
-    preco: Number,
     nome: String,
+    preco: Number,
     descricao: String,
     
   }
@@ -13,8 +13,8 @@ import mongoose, { Schema } from 'mongoose';
 const CardapioSchema = new mongoose.Schema(
     {    
         id: {type: String},
-        preco: {type: Number,required: true},
         nome: {type:String, required: true, unique:true},
+        preco: {type: Number,required: true},
         descricao: {type:String, required: true}
     }
 )
