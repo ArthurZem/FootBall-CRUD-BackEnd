@@ -44,4 +44,4 @@ const UsuarioSchema: Schema = new Schema(
 
 const usuarios = mongoose.model<interfaceUsuario>('usuario', UsuarioSchema);
 
-module.exports = usuarios;
+export default usuarios;

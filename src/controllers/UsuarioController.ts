@@ -1,110 +1,15 @@
 import { request, Request, response, Response } from 'express';
 import { model } from 'mongoose';
+import usuarios from '../models/Usuario';
 
 const Usuario_Schema = require('../models/Usuario');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const usuarioModel = require ("../models/Usuario");
-
-const usuario = {
-    index: async(req: Request, res: Response) =>{
-        const {email} = req.headers;
-
-        const userExists = await usuarioModel.find({});
-
-        if(userExists){
-            return res.status(200).json(userExists);
-        }
-        return res.status(404);
-    },
-
-    getUsuario: async(req:Request, res: Response) =>{
-        const { email } = req.headers;
-
-        const userExists = await usuarioModel.findOne({email: email});
-
-        if(userExists){
-            return res.status(200).json(userExists);
-        }
-        return res.status(404);
-    },
-
-    createUser: async(req: Request, res: Response) => {
-        const {nome, email, password} = req.body;
-
-        const userExists = await usuarioModel.findOne({email: email});
-
-        if(userExists){
-            return res.status(200).json(userExists);
-        }
-        return res.status(404);
-
-        // Criar password
-
-        const salt = await bcrypt.genSalt(12);
-        const hashPassword = await bcrypt.hash(password,salt)
-
-        const newUser = new usuarioModel({
-            nome,
-            email,
-            hashPassword
-        });
-
-        try{
-            await newUser.save();
-
-            res.status(201).json({message: `Usuário cadastrado!`})
-        }catch{Error}{
-            res.status(500).json({message: `erro ao cadastrar`})
-        }
-    },
-
-    login: async(req: Request, res: Response) => {
-        const {email, password} = req.body;
-
-        if(!email){
-            return res.status(422).json({message: `O email deve ser obrigatório`});
-        }
-        
-        if(!password){
-            return res.status(422).json({message: `A senha deve ser obrigatória`});
-        }
-
-        const user = await usuarioModel.findOne({ email: email });
-
-        const checkPassword = await bcrypt.compare(password, user.passwordHash);
-
-        if (!checkPassword) {
-            return response.status(422).json({ msg: "Senha inválida" });
-          }
-
-          try {
-            const secret = process.env.SECRET;
-      
-            const token = jwt.sign(
-              {
-                id: user.id,
-              },
-              secret
-            );
-      
-            response.status(200).json({
-              msg: "Autenticação realizada com sucesso!",
-              token,
-              user: {
-                id: user._id,
-                nome: user.nome,
-              },
-            });
-          } catch (error) {
-            response.status(500).json({ msg: error });
-          }
-    },
-};
 
 
-/*class UsuarioController {
+
+class UsuarioController {
     public async add(req: Request,res: Response): Promise<void> {
         let usuario = new usuarios(req.body);
 
@@ -180,5 +85,3 @@ const usuario = {
 
 
 export default new UsuarioController();
-*/
-export {usuario}
