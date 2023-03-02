@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import { ServerApiVersion } from 'mongodb';
 import routes from "./routes";
 
+require('dotenv').config();
+
 class App {
 public express: express.Application;
 

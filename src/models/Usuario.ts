@@ -1,47 +1,39 @@
-import mongoose, { Schema } from 'mongoose';
-
+import mongoose, { Document, Schema } from 'mongoose';
 const bcrypt = require('bcrypt');
 
+interface Usuario extends Document {
+  nome: string,
+  password: string,
+  email: string,
+}
 
-interface interfaceUsuario{
-    id: Schema.Types.ObjectId,
-    nome: String,
-    password: String,
-    email: String,
-    
+const UsuarioSchema: Schema = new Schema({
+  nome: {type: String, required: true},
+  password: {type: String, required: true},
+  email: {type: String, required: true, unique: true}
+});
+
+// Define um hook pré-save que utiliza o bcrypt para encriptar a senha antes de salvar no banco de dados
+UsuarioSchema.pre<Usuario>('save', async function (next) {
+  const user = this;
+
+      // Verifica se a senha foi modificada ou é nova
+  if (user.isModified('password') || user.isNew) {
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(user.password, salt);
+        //Atribui a senha encriptada ao campo password do usuário
+        user.password = hash;
+    } catch (error) {
+      return next(error);
+    }
   }
-
-const UsuarioSchema: Schema = new Schema(
-    {    
-        id: {type: Schema.Types.ObjectId},
-        nome: {type:String, required: true},
-        password: {type: String, required: true},
-        email: {type:String, required: true, unique: true}
-    })
-
-    UsuarioSchema.pre('save', async function (next) {
-        try{
-            const salt = await bcrypt.genSalt(10)
-            console.log(this.nome, this.password);
-            const hashPassword = await bcrypt.hash(this.password, salt)
-            console.log(hashPassword);
-            
-            this.password = hashPassword
-            console.log(this.password);
-            
-            next()
-            
-        } catch{
-            next();
-        }
-        
-    })
+  // Continuar fluxo de execução
+  return next();
+});
 
 
 
+const UsuarioModel = mongoose.model<Usuario>('Usuario', UsuarioSchema);
 
-
-
-const usuarios = mongoose.model<interfaceUsuario>('usuario', UsuarioSchema);
-
-export default usuarios;
+export default UsuarioModel;

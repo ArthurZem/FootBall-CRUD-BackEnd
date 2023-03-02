@@ -1,18 +1,21 @@
-import express, { Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
-export const checkUserBody = (
-  request: Request,
-  response: Response,
-  next: any
-) => {
-  const { nome, email, password } = request.body;
-  if (!nome) {
-    return response.status(422).json({ msg: "O nome é obrigatório!" });
-  } else if (!email) {
-    return response.status(422).json({ msg: "O email é obrigatório!" });
-  } else if (!password) {
-    return response.status(422).json({ msg: "A senha é obrigatória!" });
-  } else {
-    next();
-  }
-};
+// Define the secret for signing the JWT
+const secret = "my-secret-key";
+
+// Define the password for the user
+const password = "password123";
+
+// Hash the password using bcrypt
+const hash = bcrypt.hashSync(password, 10);
+
+// Check if the user's input password is correct
+const isValid = bcrypt.compareSync("password123", hash);
+
+if (isValid) {
+  // Generate the JWT
+  const token = jwt.sign({ userId: 123 }, secret);
+
+  console.log(token); // Outputs the JWT
+}
