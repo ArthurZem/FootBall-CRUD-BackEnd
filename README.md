@@ -1,2 +1,2 @@
-# RestaurantBackEnd
- Back end de uma aplicação back end para restaurante para um projeto de faculdade
+# Football-CRUD-BackEnd
+ Aplicação Back-End simples de um CRUD para registro de jogadores de futebol
