@@ -1,7 +1,7 @@
 {
-  "name": "restaurantbackend",
+  "name": "Football-CRUD-BackEnd",
   "version": "1.0.0",
-  "description": "Back end de uma aplicação back end para restaurante para um projeto de faculdade",
+  "description": "Back end de um CRUD simples para registro de jogador de futebol",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
